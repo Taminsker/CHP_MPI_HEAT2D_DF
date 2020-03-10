@@ -1,0 +1,4 @@
+#ifndef LISTFUNCTIONS_H
+#define LISTFUNCTIONS_H
+
+#endif // LISTFUNCTIONS_H

@@ -1,0 +1,55 @@
+\documentclass[french]{article}
+\usepackage{graphicx}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{xcolor}
+
+\begin{document}
+\title{Plan du code CHP}
+\maketitle
+\tableofcontents
+
+\section{Code séquentiel}
+\subsection{Première résolution}
+Il faut construire une seule fonction qui crée une liste des points définissant un maillage, il faut donc qu'il y ait les variables :
+\begin{itemize}
+	\item $N_x$ et $N_y$
+	\item $L_x$ et $L_y$
+	\item $h_x$ et $h_y$
+	\item un vecteur qui représente les points (coordonnées $x$ et $y$)
+	\item un truc (vecteur de vecteurs ?) pour représenter la matrice du problème
+\end{itemize}
+
+Il faut ensuite créer un code séquentiel en une seule fonction, qui créer une matrice, qui impose les conditions de Dirichlet sur les bords. Concernant la résolution grâce au gradient conjugué, tu peut la laisser de côté ou tu peux essayer de la coder (genre un while). Il faudrait faire des produits scalaires et des produits matriciels.\newline
+
+Il faut ensuite créer au moins un fichier \textit{.cpp} regroupant les différentes fonction de test. \newline
+
+\subsection{Découpage en fonctions}
+Il faudra regarder quelles sont les actions principales et transformer ensuite ton code séquentiel en une suite de fonctions indépendantes : comme par exemple
+\begin{itemize}
+\item Une fonction qui crée automatiquement la liste des points.
+\item Une fonction qui retourne la matrice du problème (on pourra la construire directement en imposant un condition de type Dirichlet sur les bords [Je ne sais pas si c'est bien utile de passer les fonctions f et g en paramètre par exemple, il faudra en discuter]).
+\item Une fonction qui fait le gradient conjugué.
+\item Une fonction qui sauvegarde les fichiers de valeurs (au format .dat). 
+\begin{math}
+\# x \hspace{1cm} y \hspace{1cm} u\newline
+0.0 \hspace{1cm} 0.0 \hspace{1cm} 3.9\newline
+0.3 \hspace{1cm} 0.0 \hspace{1cm} 1.3\newline
+0.7 \hspace{1cm} 0.0 \hspace{1cm} 0.5\newline
+1.0 \hspace{1cm} 0.0 \hspace{1cm} 4.6\newline
+\mbox{etc...}
+\end{math}
+\end{itemize}
+
+\subsection{Optimisation du stockage}
+Par exemple voir pour stocker que qqls coefficients de la matrice et trouver une règle pour tous les obtenir. On en a déjà un peu discuter normalement, mais il faudra voir pourquoi c'est bien et à quel point c'est utile ou non.\newline
+Ensuite le stockage de la totalité de points est certainement superflu, on pourrait créer un espèce d'objet où on peut directement récupérer les coordonnées du point $\left(i, j\right)$ À voir au fur et à mesure je pense.
+\section{Code parallèle}
+On verra après une fois que ce sera bien découpé, mais ça va demander beaucoup de dessins de communications je pense étant donné que dans l'algo du gradient conjugué il y a beaucoup de produit matriciel et de produits scalaires... va falloir dessiner !  
+
+\section{Courbes de speedup et tout leur trucs}
+Il va falloir revoir comment on calcule tous ces trucs là, et surtout comparer nos différentes mises en place (stockage creux obligatoire selon le sujet mais on peut essayer de comparer les deux types de stockage ?) Après il faudra comparer ce qu'il se passe lorsqu'on augmente le nombre de points sur le maillage et si on augmente le nombre de processus qui passent sur le programme (il faudrait savoir avec exactitude s'il y en a qui sont ralentis par d'autres ou s'ils travaillent tous au même rythme et tout, ça va pas être du gateau je sens. Mais après cela fait partit intégrante de l'amélioration du code... donc un peu le final de ce "gros" TP mdr)
+
+\end{document}

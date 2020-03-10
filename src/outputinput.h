@@ -1,0 +1,4 @@
+#ifndef OUTPUTINPUT_H
+#define OUTPUTINPUT_H
+
+#endif // OUTPUTINPUT_H
