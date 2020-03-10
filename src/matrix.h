@@ -1,20 +1,18 @@
 #ifndef MATRIX_HEAT_2D
 #define MATRIX_HEAT_2D
 
-#include "mesh.h"
-#include "data.h"
+#include <vector>
 
 class Matrix
 {
-    Matrix (Mesh * mesh, double D, double dt);
+public:
+    Matrix (int Nx, int Ny, double Lx, double Ly, double D, double dt);
     ~Matrix ();
 
-    std::vector <std::pair <int, double>> GetCoeffs (int indexLine);
+    std::vector <double> GetMatrixLine (int i, int j);
 
 private:
-    double m_a, m_b, m_c;
-    double m_D, m_dt;
-    Mesh * m_mesh;
+    double coef_a, coef_b, coef_c;
 };
 
 
