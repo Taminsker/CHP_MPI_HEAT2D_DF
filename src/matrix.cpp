@@ -2,6 +2,7 @@
 
 
 Matrix::Matrix (int Nx, int Ny, double Lx, double Ly, double D, double dt) :
+    m_Nx (Nx), m_Ny (Ny)
 {
     double dx = Lx / double (Nx);
     double dy = Ly / double (Ny);

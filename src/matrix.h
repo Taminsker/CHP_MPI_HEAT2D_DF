@@ -12,6 +12,7 @@ public:
     std::vector <double> GetMatrixLine (int i, int j);
 
 private:
+    int m_Nx, m_Ny;
     double coef_a, coef_b, coef_c;
 };
 
