@@ -1,5 +1,5 @@
 CC = mpicxx
-CFLAGS = #-Wall -Wextra -g
+CFLAGS = -std=c++11 -g #-Wall -Wextra -g
 LFLAGS =
 EXE_NAME = exe
 SRC_DIR = src
