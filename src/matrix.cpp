@@ -30,7 +30,7 @@ std::vector <double> Matrix::GetMatrixLine (int i, int j)
     if (j > 0) // contribution du pt j-1
         coeffs [0] = coef_c;
     if (j < m_Ny) // contribution du pt j+1
-        coeffs [4] = coef_b;
+        coeffs [4] = coef_c;
 
     return  coeffs;
 }
