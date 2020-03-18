@@ -34,3 +34,36 @@ std::vector <double> Matrix::GetMatrixLine (int i, int j)
 
     return  coeffs;
 }
+
+std::vector <double> operator* (Matrix A, std::vector <double> x)
+{
+  // Test pour savoir si A et x ont des tailles compatibles
+
+  int N = x.size ();
+  std::vector <double> b (N);
+
+  for (int i = 0; i < Nx; i++) {
+    for (int j = 0; j < Ny; j++) {
+
+      int index = j * Nx + i;
+
+      b [index] *= GetMatrixLine (i,j) [2];
+
+      if (index > 1)
+        b [index] += GetMatrixLine (i,j) [1] * b[index - 1];
+
+      if (index > Nx)
+        b [index] += GetMatrixLine (i,j) [0] * b[index - Nx];
+
+      if (index + 1 < N)
+        b [index] += GetMatrixLine (i,j) [3] * b[index + 1];
+
+      if (index + Nx < N)
+        b [index] += GetMatrixLine (i,j) [4] * b[index + Nx];
+
+    }
+  }
+
+  return b;
+
+}

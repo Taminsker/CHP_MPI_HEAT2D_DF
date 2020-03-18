@@ -16,6 +16,7 @@ private:
     double coef_a, coef_b, coef_c;
 };
 
+std::vector <double> operator* (Matrix A, std::vector <double> x);
 
 
 #endif // MATRIX_HEAT_2D
