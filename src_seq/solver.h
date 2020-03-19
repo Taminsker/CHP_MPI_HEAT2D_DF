@@ -3,6 +3,9 @@
 
 #include <cmath>
 
-std::vector <double> conj_gradient (Matrix A, std::vector <double> x);
+#include "operators.h"
+#include "matrix.h"
+
+Vector conj_gradient (const Matrix &A, const Vector &x);
 
 #endif// SOLVER_HEAT_2D

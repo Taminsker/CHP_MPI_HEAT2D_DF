@@ -3,21 +3,27 @@
 
 #include <vector>
 #include <stdio.h>
+#include <string>
 
-double operator| (const std::vector<double> &x, const std::vector<double> &y);
+typedef std::vector <double> Vector;
 
-std::vector<double> operator+ (const std::vector<double> &x, const std::vector<double> &y);
+double operator| (Vector x, Vector y);
 
-std::vector<double> operator- (const std::vector<double> &x, const std::vector<double> &y);
+Vector operator+ (const Vector &x, const Vector &y);
 
-void operator+= (std::vector<double> &x, const std::vector<double> &y);
+Vector operator- (const Vector &x, const Vector &y);
 
-void operator-= (std::vector<double> &x, const std::vector<double> &y);
+Vector& operator+= (Vector &x, const Vector &y);
 
-std::vector<double> operator* (double k, std::vector<double> x);
+Vector& operator-= (Vector &x, const Vector &y);
 
-std::vector<double> operator* (std::vector<double> x, double k);
+Vector operator* (double k, const Vector &x);
 
-void print (std::vector<double> a);
+Vector operator* (const Vector &x, double k);
+
+Vector& operator*= (Vector &x, double k);
+
+
+void print (std::string name, Vector a, size_t dispSize = 5);
 
 #endif // OPERATORS_H

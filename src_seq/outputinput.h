@@ -1,17 +1,16 @@
 #ifndef OUTPUTINPUT_H
 #define OUTPUTINPUT_H
 
+#include <sstream>
+#include <iostream>
+#include <iomanip>
 #include <fstream>
+#include <vector>
 #include <string>
-#include <stdlib.h>
-#include <cstring>
 
-struct Param
-{
-  int Nx, Ny;
-  double Lx, Ly, D, dt;
-};
+#include "matrix.h"
+#include "operators.h"
 
-Param readParameters (std::string filename = "param.dat");
+void printFile (std::string filename, const Vector &a, const Matrix &A);
 
 #endif // OUTPUTINPUT_H

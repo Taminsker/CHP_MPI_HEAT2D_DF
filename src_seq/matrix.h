@@ -2,21 +2,31 @@
 #define MATRIX_HEAT_2D
 
 #include <vector>
+#include <string>
+#include <fstream>
+#include <iostream>
+
+#include "operators.h"
 
 class Matrix
 {
 public:
-    Matrix (int Nx, int Ny, double Lx, double Ly, double D, double dt);
+    Matrix ();
     ~Matrix ();
 
-    std::vector <double> GetMatrixLine (int i, int j);
+    void ReadParamFile (std::string filename = "param.dat");
 
-private:
-    int m_Nx, m_Ny;
-    double coef_a, coef_b, coef_c;
+    int Nx, Ny;
+    double Lx, Ly;
+    double dx, dy;
+    double D, dt;
+    double coeff_a, coeff_b, coeff_c;
 };
 
-std::vector <double> operator* (Matrix A, std::vector <double> x);
+Vector operator* (const Matrix &A, const Vector &x);
+Vector operator* (const Vector &x, const Matrix &A);
+
+void print (std::string name, const Matrix &A, int infr = 0, int supr = 0, int infc = 0, int supc = 0);
 
 
 #endif // MATRIX_HEAT_2D

@@ -1,33 +1,88 @@
 #include "solver.h"
 
-std::vector <double> conj_gradient (Matrix A, std::vector <double> b)
+Vector conj_gradient (const Matrix &A, const Vector &b)
 {
-  // Test pour savoir si A et x ont des tailles compatibles
+    int N = b.size ();
 
-  int size = b.size ();
+    if (N != (A.Nx * A.Ny)) return 0. * b;
 
-  double eps = 1e-5;
+    double eps = 1e-5;
 
-  std::vector <double> x (size, 0.);
-  std::vector <double> r = b;
-  std::vector <double> p = r;
+    // Vector x (N, 0.);
+    // Vector r = b;
+    // Vector p = r;
 
-  for (int k = 0; k < N; k++) {
+    Vector x (N, 0.);
+    Vector r = -1 * b;
+    Vector p = -1 * r;
 
-    double alpha = (r | r) / (A * p | p);
 
-    x += alpha * p;
+    if (sqrt ((r | r)) < eps)
+    {
+        return x;
+    }
 
-    std::vector <double> r_bis = r - alpha * (A * p);
+    for (int k = 0; k < N; k++)
+    {
+        // printf ("(r|r)  = %f\n", (r | r));
+        // printf ("(Ap|p)  = %f\n", ((A * p) | p));
+        double alpha = (r | r) / ((p * A) | p);
 
-    if ( sqrt( (r_bis | r_bis) ) < eps)
-      return x;
+        // printf ("alpha  = %f\n", alpha);
 
-    double beta = (r_bis | r_bis) / (r | r);
+        x += alpha * p;
 
-    p *= beta;
-    p += r_bis;
-  }
+        Vector r_bis = r + (alpha * (A * p));
 
-  return x;
+        printf ("error %.20f\n", sqrt ((r_bis | r_bis)));
+        // print ("p", p, 9);
+        if (sqrt ((r_bis | r_bis)) < eps)
+        {
+            return x;
+        }
+
+        double beta = (r_bis | r_bis) / (r | r);
+
+        // printf ("(r2|r2)  = %f\n", (r_bis | r_bis));
+
+        // printf ("beta  = %f\n\n", beta);
+
+        p = - 1 * r_bis + beta * p;
+        r = r_bis;
+        // p *= beta;
+        // p += r_bis;
+    }
+
+    // for (int k = 0; k < N; k++)
+    // {
+    //     // printf ("(r|r)  = %f\n", (r | r));
+    //     // printf ("(Ap|p)  = %f\n", ((A * p) | p));
+    //     double alpha = (r | r) / ((A * p) | p);
+    //
+    //     // printf ("alpha  = %f\n", alpha);
+    //
+    //     x += alpha * p;
+    //
+    //     Vector r_bis = r - (alpha * (A * p));
+    //
+    //     printf ("error %.20f\n", sqrt ((r_bis | r_bis)));
+    //     // print ("p", p, 9);
+    //     if (sqrt ((r_bis | r_bis)) < eps)
+    //     {
+    //         return x;
+    //     }
+    //
+    //     double beta = (r_bis | r_bis) / (r | r);
+    //
+    //     // printf ("(r2|r2)  = %f\n", (r_bis | r_bis));
+    //
+    //     // printf ("beta  = %f\n\n", beta);
+    //
+    //     p = r_bis + beta * p;
+    //     r = r_bis;
+    //     // p *= beta;
+    //     // p += r_bis;
+    // }
+
+    return x;
 }

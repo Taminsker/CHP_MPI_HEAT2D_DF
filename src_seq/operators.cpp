@@ -1,115 +1,98 @@
 #include "operators.h"
 
-double operator| (const std::vector<double> &x, const std::vector<double> &y)
+double operator| (Vector x, Vector y)
 {
-  if (x.size () != y.size ())
-  {
-    return -1.;
-  }
+    if (x.size () != y.size ()) return -1.;
 
-  double ps = 0;
+    double ps = 0;
 
-  for (int i = 0; i < x.size (); ++i)
-  {
-    ps += x [i] * y [i];
-  }
+    for (size_t i = 0; i <= x.size () ; ++i)
+    {
+        ps += x [i] * y [i];
+    }
 
-  return ps;
+    return ps;
 }
 
 
-std::vector<double> operator+ (const std::vector<double> &x, const std::vector<double> &y)
+Vector operator+ (const Vector &x, const Vector &y)
 {
-  if (x.size () != y.size ())
-  {
-    return std::vector<double> (1, -1.);
-  }
+    if (x.size () != y.size ()) return Vector (1, -1.);
 
-  std::vector<double> vec = x;
-
-  for (int i = 0; i < x.size (); ++i)
-  {
-    vec [i] += y [i];
-  }
-
-  return vec;
+    Vector vec = x;
+    return vec += y;
 }
 
 
-std::vector<double> operator- (const std::vector<double> &x, const std::vector<double> &y)
+Vector operator- (const Vector &x, const Vector &y)
 {
-  if (x.size () != y.size ())
-  {
-    return std::vector<double> (1, -1.);
-  }
+    if (x.size () != y.size ()) return Vector (1, -1.);
 
-  std::vector<double> vec = x;
-
-  for (int i = 0; i < x.size (); ++i)
-  {
-    vec [i] -=  y [i];
-  }
-
-  return vec;
+    Vector vec = x;
+    return vec -= y;
 }
 
 
-void operator+= (std::vector<double> &x, const std::vector<double> &y)
+Vector& operator+= (Vector &x, const Vector &y)
 {
-  if (x.size () != y.size ())
-  {
+    if (x.size () != y.size ()) return x;
+
+    for (size_t i = 0; i < x.size (); ++i)
+    {
+        x [i] += y [i];
+    }
+
+    return x;
+}
+
+
+Vector& operator-= (Vector &x, const Vector &y)
+{
+    if (x.size () != y.size ()) return x;
+
+    for (size_t i = 0; i < x.size (); ++i)
+    {
+        x [i] -= y [i];
+    }
+
+    return x;
+}
+
+
+Vector operator* (double k, const Vector &x)
+{
+    Vector vec = x;
+    return vec *= k;
+}
+
+
+Vector operator* (const Vector &x, double k)
+{
+    Vector vec = x;
+    return vec *= k;
+}
+
+Vector& operator*= (Vector &x, double k)
+{
+    for (size_t i = 0; i < x.size (); ++i)
+    {
+        x [i] *= k;
+    }
+
+    return x;
+}
+
+void print (std::string name, Vector a, size_t dispSize)
+{
+    if (name != "")
+    printf ("%s = ", name.c_str ());
+
+    for (size_t i = 0; i < a.size() && i < dispSize; i++)
+    printf("%f ", a [i]);
+
+    if (a.size () > dispSize)
+    printf (" ... [%i]", a.size ());
+    printf("\n");
+
     return;
-  }
-
-  for (int i = 0; i < x.size (); ++i)
-  {
-    x [i] += y [i];
-  }
-}
-
-
-void operator-= (std::vector<double> &x, const std::vector<double> &y)
-{
-  if (x.size () != y.size ())
-  {
-    return;
-  }
-
-  for (int i = 0; i < x.size (); ++i)
-  {
-    x [i] -= y [i];
-  }
-
-  return;
-}
-
-
-std::vector<double> operator* (double k, std::vector<double> x)
-{
-  for (int i = 0; i < x.size (); ++i)
-  {
-    x [i] *= k;
-  }
-
-  return x;
-}
-
-
-std::vector<double> operator* (std::vector<double> x, double k)
-{
-  for (int i = 0; i < x.size (); ++i)
-  {
-    x [i] *= k;
-  }
-
-  return x;
-}
-
-void print (std::vector<double> a)
-{
-  for (int i = 0; i < a.size(); i++)
-  {
-    printf("%f, ", a [i]);
-  }
-  printf("\n");
 }

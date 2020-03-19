@@ -1,31 +1,33 @@
 #include "outputinput.h"
 
-Param readParameters (std::string filename)
+
+void printFile (std::string filename, const Vector &a, const Matrix &A)
 {
-  Param parameters;
-  std::string none, var;
+    std::ofstream file (filename.c_str ());
 
-  std::fstream file (filename.c_str());
+    auto space = std::setw (20);
+    file << "#x" << space << "y" << space << "u" << std::endl;
 
-  file >> none >> std::ws >> var >> std::ws;
-  parameters.Nx = std::stoi (var);
+    double dx = A.Lx / double (A.Nx);
+    double dy = A.Ly / double (A.Ny);
 
-  file >> none >> std::ws >> var >> std::ws;
-  parameters.Ny = std::stoi (var);
+    int Nx = A.Nx;
+    int Ny = A.Ny;
 
-  file >> none >> std::ws >> var >> std::ws;
-  parameters.Lx = std::stod (var);
+    for (int i = 0; i < Nx; ++i)
+    {
+        for (int j = 0; j < Ny; ++j)
+        {
+            double x = i * dx;
+            double y = j * dy;
 
-  file >> none >> std::ws >> var >> std::ws;
-  parameters.Ly = std::stod (var);
+            int index = j * Nx + i;
 
-  file >> none >> std::ws >> var >> std::ws;
-  parameters.D = std::stod (var);
+            file << x << space << y << space << a [index] << std::endl;
+        }
+    }
 
-  file >> none >> std::ws >> var >> std::ws;
-  parameters.dt = std::stod (var);
+    file.close ();
 
-  file.close ();
-
-  return parameters;
+    return;
 }
