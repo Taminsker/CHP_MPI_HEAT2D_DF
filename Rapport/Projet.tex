@@ -1,0 +1,409 @@
+
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[frenchb]{babel}
+\usepackage{amssymb,amsmath}
+\usepackage{float,subfig}
+
+
+\textwidth=170mm
+\textheight=240mm
+\voffset=-30mm
+\hoffset=-21mm
+
+\usepackage{graphicx}
+
+\def \bs {\backslash}
+\def \eps {\varepsilon}
+\def \un {\textbf{1}}
+\def \RR {\mathbb{R}}
+\def \EE {\mathbb{E}}
+\def \CC {\mathbb{C}}
+\def \KK {\mathbb{K}}
+\def \NN {\mathbb{N}}
+\def \PP {\mathbb{P}}
+\def \sC {\mathcal{C}}
+\def \sF {\mathcal{F}}
+\def \sM {\mathcal{M}}
+\def \sO {\mathcal{O}}
+\def \sG {\mathcal{G}}
+\def \sE {\mathcal{E}}
+\def \sB {\mathcal{B}}
+\def \sH {\mathcal{H}}
+\def \sN {\mathcal{N}}
+\def \sP {\mathcal{P}}
+\def \sU {\mathcal{U}}
+\def \sL {\mathcal{L}}
+\def \disp {\displaystyle}
+
+
+\begin{document}
+
+{~}
+
+\thispagestyle{empty}
+
+\vspace{50 mm}
+
+\centerline{\Huge \textbf{Calcul Haute Performance}}
+
+\vspace{15 mm}
+
+\centerline{\LARGE \sc Projet de Programmation}
+
+\vspace{15 mm}
+
+\centerline{\Large Alexis TARDIEU}
+
+\centerline{\vspace{1 mm}}
+
+\centerline{\Large Valentin PANNETIER}
+
+\vspace{15 mm}
+
+\centerline{\Large \textit{Utilisation de la Bibliothèque MPI pour la Résolution de}}
+
+\centerline{\vspace{1 mm}}
+
+\centerline{\Large \textit{l'Equation de la Chaleur 2D en Différences Finies}}
+
+\vspace{30 mm}
+
+\centerline{\Large Université de Bordeaux $-$ M1 EDP \& Modélisation}
+
+\newpage
+
+\section{Analyse du problème}
+
+\noindent
+\textbf{$\star$ Le schéma numérique :}
+
+\vspace{5 mm}
+
+\noindent
+On étudie ici l'équation de la chaleur 2D avec conditions de Dirichlet :
+
+$$\forall~t \geq 0, \forall~(x,y) \in [0,Lx]\times[0,Ly],~~ \left\{
+    \begin{array}{lll}
+        \disp \frac{\partial u}{\partial t}(x,y,t) - D \Delta u(x,y,t) = f(x,y,t) \\
+        u|_{\Gamma_0} = g(x,y,t) \\
+        u|_{\Gamma_1} = h(x,y,t)
+    \end{array}
+\right.$$
+
+\vspace{5 mm}
+
+\noindent
+Comme le Laplacien en 2D s'écrit
+
+$$\Delta u = \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}~,$$
+
+\vspace{5 mm}
+
+\noindent
+le schéma d'Euler implicite centré en différences finies est :
+
+$$\frac{u^{n+1}_{i,j} - u^n_{i,j}}{\Delta t} - D \frac{u^{n+1}_{i+1,j} - 2u^{n+1}_{i,j} + u^{n+1}_{i-1,j}}{\Delta x^2} - D \frac{u^{n+1}_{i,j+1} - 2u^{n+1}_{i,j} + u^{n+1}_{i,j-1}}{\Delta y^2} = f^n_{i,j}~.$$
+
+\vspace{5 mm}
+
+\noindent
+\textbf{$\star$ Mise sous forme matricielle :}
+
+\vspace{5 mm}
+
+\noindent
+En convenant de poser
+
+$$a := 1 + \frac{2D\Delta t}{\Delta x^2} + \frac{2D\Delta t}{\Delta y^2},~~~ b:= -\frac{D\Delta t}{\Delta x^2},~~~ c:= -\frac{D\Delta t}{\Delta y^2}~,$$
+
+\vspace{5 mm}
+
+\noindent
+le schéma numérique précédent peut se réécrire sous la forme
+
+$$a \cdot u^{n+1}_{i,j} + b \cdot [u^{n+1}_{i+1,j} + u^{n+1}_{i-1,j}] + c \cdot [u^{n+1}_{i,j+1} + u^{n+1}_{i,j-1}] = u^n_{i,j} + \Delta t f^n_{i,j}~.$$
+
+\vspace{5 mm}
+
+\noindent
+Notons maintenant, pour tout $j \in \{1, \ldots, Ny \}$,
+
+$$U_j := \begin{pmatrix}
+	u_{1,j} \\
+	u_{2,j} \\
+	\vdots \\
+	u_{Nx,j}
+\end{pmatrix}~~~~\text{et}~~~~F_j := \begin{pmatrix}
+	f_{1,j} \\
+	f_{2,j} \\
+	\vdots \\
+	f_{Nx,j}
+\end{pmatrix}~,$$
+
+\vspace{5 mm}
+
+\noindent
+puis construisons les deux vecteurs de taille $Nx \times Ny$ :
+
+$$U := \begin{pmatrix}
+	U_1 \\
+	U_2 \\
+	\vdots \\
+	U_{Ny}
+\end{pmatrix}~~~~\text{et}~~~~F := \begin{pmatrix}
+	F_1 \\
+	F_2 \\
+	\vdots \\
+	F_{Ny}
+\end{pmatrix}.$$
+
+\vspace{5 mm}
+
+\newpage
+
+\noindent
+Définissons également les deux matrices de $\sM_{Nx}(\RR)$ :
+
+$$T := \begin{pmatrix}
+		a & b & ~ & ~ & ~ \\
+		b & a & b & ~ & ~ \\
+		~ & \ddots & \ddots & \ddots &  ~ \\
+		~ & ~ & b & a & b \\
+		~ & ~ & ~ & b & a
+	\end{pmatrix}~~~~\text{et}~~~~M := \begin{pmatrix}
+		c & ~ & ~ & ~ \\
+		~ & c & ~ & ~ \\
+		~ & ~ & \ddots & ~ \\
+		~ & ~ & ~ & c
+	\end{pmatrix} = c \cdot I_{Nx}~.$$
+
+\vspace{5 mm}
+
+\noindent
+Avant de mettre le schéma numérique sous forme matricielle, il convient d'expliquer convenablement ce qu'il se passe sur les quatre bords, en prenant en compte les conditions aux limites de Dirichlet données. On a :
+
+\vspace{5 mm}
+
+\noindent
+\begin{itemize}
+	\item Bord inférieur $\Gamma_0$ : Pour tout $i \in \{1, \ldots, Nx \}$ et pour $j = 1$,
+
+$$a \cdot u^{n+1}_{i,1} + b \cdot [u^{n+1}_{i+1,1} + u^{n+1}_{i-1,1}] + c \cdot u^{n+1}_{i,2} = u^n_{i,1} + \Delta t f^n_{i,1} - c \cdot g^n_{i,0}$$
+
+\vspace{5 mm}
+
+\noindent
+	\item Bord supérieur $\Gamma_0$ : Pour tout $i \in \{1, \ldots, Nx \}$ et pour $j = Ny$,
+
+$$a \cdot u^{n+1}_{i,Ny} + b \cdot [u^{n+1}_{i+1,Ny} + u^{n+1}_{i-1,Ny}] + c \cdot u^{n+1}_{i,Ny-1} = u^n_{i,j} + \Delta t f^n_{i,j} - c \cdot g^n_{i,Ny+1}$$
+
+\vspace{5 mm}
+
+\noindent
+	\item Bord gauche $\Gamma_1$ : Pour tout $j \in \{1, \ldots, Ny \}$ et pour $i = 1$,
+
+$$a \cdot u^{n+1}_{1,j} + b \cdot u^{n+1}_{2,j} + c \cdot [u^{n+1}_{1,j+1} + u^{n+1}_{1,j-1}] = u^n_{1,j} + \Delta t f^n_{1,j} - b \cdot h^n_{0,j}$$
+
+\vspace{5 mm}
+
+\noindent
+	\item Bord droit $\Gamma_1$ : Pour tout $j \in \{1, \ldots, Ny \}$ et pour $i = Nx$,
+
+$$a \cdot u^{n+1}_{Nx,j} + b \cdot u^{n+1}_{Nx,j} + c \cdot [u^{n+1}_{Nx,j+1} + u^{n+1}_{Nx,j-1}] = u^n_{Nx,j} + \Delta t f^n_{Nx,j} - b \cdot h^n_{Nx+1,j}$$
+
+\end{itemize}
+
+\vspace{5 mm}
+
+\noindent
+Autrement dit, pour tous les points de l'intérieur qui sont au voisinage du bord $\Gamma_0$, ie. pour les noeuds contenus dans $U_1$ et $U_{Ny}$, il faut ajouter les termes $- c \cdot g^n_{i,j}$ correspondants dans un vecteur $B_0$. De même, pour tous les points de l'intérieur qui sont au voisinage du bord $\Gamma_1$, ie. ceux pour lesquels $i \in \{1, Nx \}$ (la première et la dernière coordonnée de $U_j$ pour tout $j$), il faut ajouter les termes $- b \cdot h^n_{i,j}$ adéquats dans un vecteur $B_1$. Le schéma numérique se met ainsi sous la forme matricielle suivante :
+
+$$\underbrace{\begin{pmatrix}
+		T & M & ~ & ~ & ~ \\
+		M & T & M & ~ & ~ \\
+		~ & \ddots & \ddots & \ddots &  ~ \\
+		~ & ~ & M & T & M \\
+		~ & ~ & ~ & M & T
+	\end{pmatrix}}_{\disp =: A} \begin{pmatrix}
+		U^{n+1}_1 \\
+		U^{n+1}_2 \\
+		\vdots \\
+		U^{n+1}_{Ny-1} \\
+		U^{n+1}_{Ny}
+	\end{pmatrix} = \begin{pmatrix}
+		U^n_1 \\
+		U^n_2 \\
+		\vdots \\
+		U^n_{Ny-1} \\
+		U^n_{Ny}
+	\end{pmatrix} + \Delta t \begin{pmatrix}
+		F^n_1 \\
+		F^n_2 \\
+		\vdots \\
+		F^n_{Ny-1} \\
+		F^n_{Ny}
+	\end{pmatrix} + B_0 + B_1~,$$
+
+\vspace{5 mm}
+
+\noindent
+où les vecteurs de termes aux bord $B_0$ et $B_1$ sont définis par
+
+$$B_0 := -c \begin{pmatrix}
+	^t (g^n_{1,0}, \ldots, g^n_{Nx,0}) \\
+	0 \\
+	\vdots \\
+	0 \\
+	^t (g^n_{1,Ny+1}, \ldots, g^n_{Nx,Ny+1})
+\end{pmatrix}~~~~\text{et}~~~~B_1 := -b \begin{pmatrix}
+	^t (h^n_{0,1}, \ldots, h^n_{Nx+1,1}) \\
+	^t (h^n_{0,2}, \ldots, h^n_{Nx+1,2}) \\
+	\vdots \\
+	^t (h^n_{0,Ny}, \ldots, h^n_{Nx+1,Ny})
+\end{pmatrix}$$
+
+\vspace{5 mm}
+
+\noindent
+Finalement, le schéma d'Euler implicite centré est ici
+
+$$A \cdot U^{n+1} = \underbrace{U^n + \Delta t F + B_0 + B_1}_{\disp =: W^n}$$
+
+\vspace{5 mm}
+
+\noindent
+\textbf{$\star$ Structure et propriétés de A :}
+
+\vspace{5 mm}
+
+\noindent
+La matrice $A \in \sM_{Nx \times Ny}(\RR)$, qu'on peut réécrire d'une façon plus extensive et explicite :
+
+\vspace{5 mm}
+
+$$A = \left (
+   \begin{array}{c|c|c|c}
+   
+      \begin{array}{llll}
+	a & b &  &  \\
+	b & a & b &  \\
+	 & \ddots & \ddots & b \\
+	 &  & b & a \end{array} & \begin{array}{llll}
+	c &  &  &  \\
+	 & c &  &  \\
+	 &  & \ddots & \\
+	 &  &  & c \end{array} & ~ & ~ \\
+       
+      \hline
+      
+      \begin{array}{llll}
+	c &  &  &  \\
+	 & c &  &  \\
+	 &  & \ddots & \\
+	 &  &  & c \end{array} & \begin{array}{llll}
+	a & b &  &  \\
+	b & a & b &  \\
+	 & \ddots & \ddots & b \\
+	 &  & b & a \end{array} & \begin{array}{lll}
+	~ & ~ & ~ \\
+	~ & \ddots & ~ \\
+	~ & ~ & ~ \end{array} & ~ \\
+      
+      \hline
+      
+      ~ & \begin{array}{lll}
+	~ & ~ & ~ \\
+	~ & \ddots & ~ \\
+	~ & ~ & ~ \end{array} & \begin{array}{lll}
+	~ & ~ & ~ \\
+	~ & \ddots & ~ \\
+	~ & ~ & ~ \end{array} & \begin{array}{llll}
+	c &  &  &  \\
+	 & c &  &  \\
+	 &  & \ddots & \\
+	 &  &  & c \end{array} \\
+      
+      \hline
+      
+      ~ & ~ & \begin{array}{llll}
+	c &  &  &  \\
+	 & c &  &  \\
+	 &  & \ddots & \\
+	 &  &  & c \end{array} & \begin{array}{llll}
+	a & b &  &  \\
+	b & a & b &  \\
+	 & \ddots & \ddots & b \\
+	 &  & b & a \end{array} \\
+      
+   \end{array}
+\right)$$
+
+
+\vspace{5 mm}
+
+\noindent
+est tri-diagonale par blocs, avec $T$ elle-même tri-diagonale, et $M$ diagonale. Par conséquent, $A$ est \textit{penta-diagonale} : ceci est intéressant car elle est essentiellement \textit{creuse}. On pourrait au choix :
+
+\vspace{2 mm}
+
+\begin{itemize}
+	\item Utiliser une "sparse matrix" pour la stocker car elle est penta-diagonale (mais on ne retiendra pas cette solution car elle est moins naturelle pour la parallélisation qui va suivre).
+
+\vspace{2 mm}
+
+	\item Remarquer que toutes ses lignes sont identiques modulo une translation des coefficients vers la droite (à l'exception des débuts et fins de blocs) ; il suffira donc de travailler avec cette ligne (on retiendra cette solution).
+\end{itemize}
+
+\vspace{5 mm}
+
+\noindent
+D'autre part, en comparant le module du coefficient diagonal de $A$ (ie. $|a|$) au module de la somme des autres coordonnées d'une ligne (ie. au maximum $|2b+2c|$ car les lignes proches de 0 et de $Nx \times Ny$ ont ce module encore inférieur), on remarque que
+
+$$|a| \geq |2b+2c|.$$
+
+\noindent
+Par conséquent, cette matrice est dite à diagonale strictement dominante. Le théorème de Hadamard assure son inversibilité, et ainsi l'unicité de la solution $U^{n+1}$ du problème $A \cdot U^{n+1} = W^n$ pour un temps $n$ donné. L'inversion du système sera effectuée avec la méthode du \textit{gradient conjugué}.
+
+
+
+\newpage
+
+\section{Implémentation informatique}
+
+\subsection{Le code séquentiel}
+
+
+
+
+
+
+
+
+
+\subsection{Le code parallèle}
+
+
+
+
+
+
+
+
+
+\vspace{10 mm}
+
+\section{Validation et conclusions}
+
+
+
+
+
+
+
+
+
+
+\end{document}
