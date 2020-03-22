@@ -19,29 +19,29 @@ int main(int argc, char *argv[])
 
     int N = 4;
 
-    Vector u (N, 2);
-    Vector v (N, -3);
-    Vector w (N, 4.5);
-
-    print ("u", u);
-    print ("v", v);
-    print ("w", w);
-
-    printf ("u|v = %f\n", (u|v));
-    print ("u+v", u+v);
-    print ("u-v", u-v);
-    print ("u+v", u+v);
-    print ("2.5 * u", 2.5 * u);
-
-    w = u+v;
-    print ("u+v", w);
-    w += w;
-    print ("2*(u+v)", w);
-    w *= 0.5;
-    print ("u+v", w);
-
-
-    return 0;
+    // Vector u (N, 2);
+    // Vector v (N, -3);
+    // Vector w (N, 4.5);
+    //
+    // print ("u", u);
+    // print ("v", v);
+    // print ("w", w);
+    //
+    // printf ("u|v = %f\n", (u|v));
+    // print ("u+v", u+v);
+    // print ("u-v", u-v);
+    // print ("u+v", u+v);
+    // print ("2.5 * u", 2.5 * u);
+    //
+    // w = u+v;
+    // print ("u+v", w);
+    // w += w;
+    // print ("2*(u+v)", w);
+    // w *= 0.5;
+    // print ("u+v", w);
+    //
+    //
+    // return 0;
 
     // CAS TEST 1
 
