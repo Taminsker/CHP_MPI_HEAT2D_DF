@@ -30,7 +30,7 @@ Vector operator- (const Vector &x, const Vector &y)
     return vec -= y;
 }
 
-Vector operator+= (Vector &x, const Vector &y)
+Vector& operator+= (Vector &x, const Vector &y)
 {
     if (x.size () != y.size ()) return x;
 
