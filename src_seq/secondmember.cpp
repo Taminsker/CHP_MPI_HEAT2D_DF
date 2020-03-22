@@ -1,7 +1,7 @@
 #include "secondmember.h"
 
 std::vector <double> Set_vector_b0 (double (*g) (double, double, double),
-                                    const Matrix &A)
+                                    Matrix &A)
 {
   std::vector <double> vec_b0 (A.Nx * A.Ny, 0.);
 
@@ -19,7 +19,7 @@ std::vector <double> Set_vector_b0 (double (*g) (double, double, double),
 
 
 std::vector <double> Set_vector_b1 (double (*h) (double, double, double),
-                                    const Matrix &A)
+                                    Matrix &A)
 {
   std::vector <double> vec_b1 (A.Nx * A.Ny, 0.);
 
@@ -37,7 +37,7 @@ std::vector <double> Set_vector_b1 (double (*h) (double, double, double),
 
 
 std::vector <double> Set_vector_f (double (*f) (double, double, double),
-                                  double t, const Matrix &A)
+                                  double t, Matrix &A)
 {
   std::vector <double> vec_f (A.Nx * A.Ny, 0.);
 

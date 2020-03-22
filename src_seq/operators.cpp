@@ -1,6 +1,6 @@
 #include "operators.h"
 
-double operator| (const Vector &x, const Vector &y)
+double operator| (Vector x, Vector y)
 {
     if (x.size () != y.size ()) return -1.;
 
@@ -14,23 +14,23 @@ double operator| (const Vector &x, const Vector &y)
     return ps;
 }
 
-Vector operator+ (const Vector &x, const Vector &y)
+Vector operator+ (Vector x, Vector y)
 {
-    if (x.size () != y.size ()) return 0. * x;
+    if (x.size () != y.size ()) return Vector (x.size (), 0.);
 
     Vector vec = x;
     return vec += y;
 }
 
-Vector operator- (const Vector &x, const Vector &y)
+Vector operator- (Vector x, Vector y)
 {
-    if (x.size () != y.size ()) return 0. * x;
+    if (x.size () != y.size ()) return Vector (x.size (), 0.);
 
     Vector vec = x;
     return vec -= y;
 }
 
-Vector& operator+= (Vector &x, const Vector &y)
+Vector operator+= (Vector &x, Vector y)
 {
     if (x.size () != y.size ()) return x;
 
@@ -42,7 +42,7 @@ Vector& operator+= (Vector &x, const Vector &y)
     return x;
 }
 
-Vector& operator-= (Vector &x, const Vector &y)
+Vector operator-= (Vector &x, Vector y)
 {
     if (x.size () != y.size ()) return x;
 
@@ -54,19 +54,19 @@ Vector& operator-= (Vector &x, const Vector &y)
     return x;
 }
 
-Vector operator* (double k, const Vector &x)
+Vector operator* (double k, Vector x)
 {
     Vector vec = x;
     return vec *= k;
 }
 
-Vector operator* (const Vector &x, double k)
+Vector operator* (Vector x, double k)
 {
     Vector vec = x;
     return vec *= k;
 }
 
-Vector& operator*= (Vector &x, double k)
+Vector operator*= (Vector &x, double k)
 {
     for (size_t i = 0; i < x.size (); ++i)
     {

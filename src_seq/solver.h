@@ -6,6 +6,6 @@
 #include "operators.h"
 #include "matrix.h"
 
-Vector conj_gradient (const Matrix &A, const Vector &x);
+Vector conj_gradient (const Matrix &A, Vector &x);
 
 #endif// SOLVER_HEAT_2D
