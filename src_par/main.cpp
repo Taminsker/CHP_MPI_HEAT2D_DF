@@ -12,32 +12,34 @@ int main(int argc, char *argv[])
 
     printf("Nx = %d, Ny = %d, Lx = %f, Ly = %f, D = %f, dt = %f\n", P.Nx, P.Ny, P.Lx, P.Ly, P.D, P.dt);
 
-    std::vector<double> u (5, 1);
-    std::vector<double> v (5, 3);
-    std::vector<double> w (5, 8);
-    std::vector<double> z (4, 2);
+    // INSTRUCTIONS POUR RESOUDRE LE VRAI PROBLEME
 
-    printf("(u|v) = %f\n", (u|v));
+    //std::vector<double> u (5, 1);
+    //std::vector<double> v (5, 3);
+    //std::vector<double> w (5, 8);
+    //std::vector<double> z (4, 2);
 
-    std::vector<double> a = u + v;
+    //printf("(u|v) = %f\n", (u|v));
 
-    printf("u + v = \n");
-    for (int i = 0; i < a.size(); i++)
-    {
-      printf("%f\n", a [i]);
-    }
+    //std::vector<double> a = u + v;
 
-    std::vector<double> b = u - v;
+    //printf("u + v = \n");
+    //for (int i = 0; i < a.size(); i++)
+    //{
+    //  printf("%f\n", a [i]);
+    //}
 
-    printf("u - v = \n");
-    for (int i = 0; i < b.size(); i++)
-    {
-      printf("%f\n", b [i]);
-    }
+    //std::vector<double> b = u - v;
 
-    std::vector<double> c = 2.5*v;
+    //printf("u - v = \n");
+    //for (int i = 0; i < b.size(); i++)
+    //{
+    //  printf("%f\n", b [i]);
+    //}
 
-    print(c);
+    //std::vector<double> c = 2.5*v;
+
+    //print(c);
 
     return 0;
 }

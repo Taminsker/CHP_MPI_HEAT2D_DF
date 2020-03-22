@@ -51,3 +51,19 @@ double h_3 (double x, double y, double t)
 {
     return 1.;
 }
+
+
+// SOLUTION ANALYTIQUE CAS 1
+
+double u_ana1 (double x, double y, double t)
+{
+    return ( (y - y * y) * (x - x * x) );
+}
+
+
+// SOLUTION ANALYTIQUE CAS 2
+
+double u_ana2 (double x, double y, double t)
+{
+    return sin(x) + cos(y);
+}
