@@ -57,12 +57,12 @@ void Matrix::SetStationnaire ()
 Matrix::~Matrix ()
 {}
 
-Vector operator* (Vector &x, const Matrix &A)
+Vector operator* (const Vector &x, const Matrix &A)
 {
     return A * x;
 }
 
-Vector operator* (const Matrix &A, Vector &x)
+Vector operator* (const Matrix &A, const Vector &x)
 {
     if (x.size () != (A.Nx * A.Ny)) return Vector (x.size (), 0.);
 

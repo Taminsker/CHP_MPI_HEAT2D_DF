@@ -1,6 +1,6 @@
 #include "solver.h"
 
-Vector conj_gradient (const Matrix &A, Vector &b)
+Vector conj_gradient (const Matrix &A, const Vector &b)
 {
     int N = b.size ();
 
@@ -17,7 +17,7 @@ Vector conj_gradient (const Matrix &A, Vector &b)
     Vector p = -1 * r;
 
     print ("r", r);
-    return x;
+    // return x;
 
 
     if (sqrt ((r | r)) < eps)
