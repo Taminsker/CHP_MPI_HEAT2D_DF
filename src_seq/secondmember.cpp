@@ -3,42 +3,43 @@
 std::vector <double> Set_vector_b0 (double (*g) (double, double, double),
                                     const Matrix &A)
 {
-  std::vector <double> vec_b0 (A.Nx * A.Ny);
+  std::vector <double> vec_b0 (A.Nx * A.Ny, 0.);
 
   for (int i = 0; i < A.Nx; i++)
   {
-    vec_b0 (i) = g (i * A.dx, 0.); // Bord inférieur Gamma_0
+    vec_b0 (i) = g ((i + 1) * A.dx, 0.); // Bord inférieur Gamma_0
 
-    vec_b0 ((A.Ny - 1) * A.Nx + i) = g (i * A.dx, A.Lx); // Bord supérieur Gamma_0
+    vec_b0 ((A.Ny - 1) * A.Nx + i) = g ((i + 1) * A.dx, A.Ly); // Bord supérieur Gamma_0
   }
 
   vec_b0 *= - A.coef_c;
+
+  return vec_b0;
 }
 
 
 std::vector <double> Set_vector_b1 (double (*h) (double, double, double),
                                     const Matrix &A);
 {
-  std::vector <double> vec_b1 (A.Nx * A.Ny);
+  std::vector <double> vec_b1 (A.Nx * A.Ny, 0.);
 
-  for (int i = 0; i < (A.Nx * A.Ny); i++)
+  for (int j = 0; j < A.Ny; j++)
   {
-    if (i % A.Nx == 0)
-    {
-      vec_b1 (i) = h (0., (i % A.Nx) * A.dy); // Bord gauche Gamma_1
+      vec_b1 (j * A.Nx) = h (0., (j + 1) * A.dy); // Bord gauche Gamma_1
 
-      vec_b1 (i + A.Nx - 1) = h (A.Ly, (i % A.Nx) * A.dy); // Bord droit Gamma_1
-    }
+      vec_b1 ((j + 1) * A.Nx - 1) = h (A.Lx, (j + 1) * A.dy); // Bord droit Gamma_1
   }
 
   vec_b1 *= - A.coef_b;
+
+  return vec_b1;
 }
 
 
 std::vector <double> Set_vector_f (double (*f) (double, double, double),
                                   double t, const Matrix &A)
 {
-  std::vector <double> vec_f (A.Nx * A.Ny);
+  std::vector <double> vec_f (A.Nx * A.Ny, 0.);
 
   for (int i = 0; i < A.Nx; i++) {
     for (int j = 0; j < A.Ny; j++) {
@@ -48,4 +49,5 @@ std::vector <double> Set_vector_f (double (*f) (double, double, double),
     }
   }
 
+  return vec_f;
 }

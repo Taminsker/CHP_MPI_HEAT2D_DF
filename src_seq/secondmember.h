@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "listfunctions.h"
+#include "operators.h"
 
 std::vector <double> Set_vector_b0 (double (*g) (double, double, double),
                                     const Matrix &A);

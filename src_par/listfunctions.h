@@ -18,7 +18,7 @@ double g_2 (double x, double y, double t = 0.);
 double h_2 (double x, double y, double t = 0.);
 
 // CAS TEST 3
-double f_3 (double x, double y, double t = 0., const Matrix &A);
+double f_3 (const Matrix &A, double x, double y, double t = 0.);
 double g_3 (double x, double y, double t = 0.);
 double h_3 (double x, double y, double t = 0.);
 
