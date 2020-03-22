@@ -14,7 +14,7 @@ double operator| (const Vector &x, const Vector &y)
     return ps;
 }
 
-Vector& operator+ (const Vector &x, const Vector &y)
+Vector operator+ (const Vector &x, const Vector &y)
 {
     if (x.size () != y.size ()) return 0. * x;
 
@@ -22,7 +22,7 @@ Vector& operator+ (const Vector &x, const Vector &y)
     return vec += y;
 }
 
-Vector& operator- (const Vector &x, const Vector &y)
+Vector operator- (const Vector &x, const Vector &y)
 {
     if (x.size () != y.size ()) return 0. * x;
 
@@ -54,13 +54,13 @@ Vector& operator-= (Vector &x, const Vector &y)
     return x;
 }
 
-Vector& operator* (double k, const Vector &x)
+Vector operator* (double k, const Vector &x)
 {
     Vector vec = x;
     return vec *= k;
 }
 
-Vector& operator* (const Vector &x, double k)
+Vector operator* (const Vector &x, double k)
 {
     Vector vec = x;
     return vec *= k;
