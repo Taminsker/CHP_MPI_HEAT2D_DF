@@ -37,7 +37,7 @@ double h_2 (double x, double y, double t)
 
 // CAS TEST 3
 
-double f_3 (double x, double y, double t, const Matrix &A)
+double f_3 (const Matrix &A, double x, double y, double t)
 {
     return exp (- (x - (A.Lx / 2.)) * (x - (A.Lx / 2.))) * exp (- (y - (A.Ly / 2.)) * (y - (A.Ly / 2.))) * cos((PI / 2.) * t);
 }
