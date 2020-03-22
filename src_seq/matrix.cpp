@@ -39,12 +39,20 @@ void Matrix::ReadParamFile (std::string filename)
     dx = Lx / double (Nx);
     dy = Ly / double (Ny);
 
-    coeff_b = (- D * dt) / (dx * dx); // coeff pour i+1, et i-1
-    coeff_c = (- D * dt) / (dy * dy); // coeff pour j+1, et j-1
-    coeff_a = 1. - 2. * coeff_b - 2. * coeff_c; // coeff diagonale
+    coeff_b = - D / (dx * dx); // coeff pour i+1, et i-1
+    coeff_c = - D / (dy * dy); // coeff pour j+1, et j-1
+    coeff_a = 1. / dt - 2. * coeff_b - 2. * coeff_c; // coeff diagonal
 
     return;
 }
+
+void Matrix::SetStationnaire ()
+{
+    coeff_a = - 2. * coeff_b - 2. * coeff_c; // coeff diagonal
+    return;
+}
+
+
 
 Matrix::~Matrix ()
 {}

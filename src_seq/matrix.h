@@ -15,6 +15,7 @@ public:
     ~Matrix ();
 
     void ReadParamFile (std::string filename = "param.dat");
+    void SetStationnaire ();
 
     int Nx, Ny;
     double Lx, Ly;
