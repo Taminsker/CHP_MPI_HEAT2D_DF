@@ -74,19 +74,19 @@ Vector operator* (const Matrix &A, const Vector &x)
             int index = j * A.Nx + i;
 
             // contribution du pt_(i, j-1)
-            b [index - A.Nx] += (j > 0 ? A.coeff_c * x [index - A.Nx] : 0.);
+            b [index] += (j > 0 ? A.coeff_c * x [index - A.Nx] : 0.);
 
             // contribution du pt_(i-1, j)
-            b [index - 1] += (i > 0 ? A.coeff_b * x [index - 1]: 0.);
+            b [index] += (i > 0 ? A.coeff_b * x [index - 1]: 0.);
 
             // contribution du pt_(i, j)
             b [index] += A.coeff_a * x [index];
 
             // contribution du pt_(i+1, j)
-            b [index + 1] += (i + 1 < A.Nx ? A.coeff_b * x [index + 1] : 0.);
+            b [index] += (i + 1 < A.Nx ? A.coeff_b * x [index + 1] : 0.);
 
             // contribution du pt_(i, j+1)
-            b [index + A.Nx] += (j + 1 < A.Ny ? A.coeff_c * x [index + A.Nx] : 0.);
+            b [index] += (j + 1 < A.Ny ? A.coeff_c * x [index + A.Nx] : 0.);
         }
     }
     return b;

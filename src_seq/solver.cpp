@@ -9,27 +9,26 @@ Vector conj_gradient (const Matrix &A, const Vector &b)
     double eps = 1e-5;
 
     Vector x (N, 0.);
-    Vector r = b;
-    Vector p = r;
+    double alpha, beta, rNorm;
+    Vector r = b - (A * x);
+    Vector p = b - (A * x);
+    Vector r_bis;
 
     for (int k = 0; k < N; k++) {
+        alpha = (r | r) / (p | (A * p));
+        x += (alpha * p);
+        r_bis = r - (alpha * (A * p));
+        rNorm = sqrt(r_bis|r_bis);
+        
+        printf("error : %f\n", rNorm);
+        if (rNorm < eps)
+        {
+            return x;
+        }
 
-      double alpha = (r | r) / ((A * p) | p);
-
-      x += alpha * p;
-
-      Vector r_bis = r;
-      r_bis -= alpha * (A * p);
-
-      printf("error : %10.5f\n", sqrt ((r_bis|r_bis)));
-      if (sqrt ((r_bis|r_bis)) < eps)
-        return x;
-
-      double beta = (r_bis | r_bis) / (r | r);
-
-      p *= beta;
-      p += r_bis;
-      r = r_bis;
+        beta = (r_bis | r_bis) / (r | r);
+        p = r_bis + (beta * p);
+        r = r_bis;
     }
 
     return x;

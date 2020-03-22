@@ -78,14 +78,17 @@ Vector& operator*= (Vector &x, double k)
 
 void print (std::string name, Vector a, size_t dispSize)
 {
-    if (name != "")
-    printf ("%s = ", name.c_str ());
+    if (name != "") printf ("%s = ", name.c_str ());
 
     for (size_t i = 0; i < a.size() && i < dispSize; i++)
-    printf("%f ", a [i]);
+    {
+        printf("%f ", a [i]);
+    }
 
     if (a.size () > dispSize)
-    printf (" ... [%i]", a.size ());
+    {
+        printf (" ... [%i]", a.size ());
+    }
     printf("\n");
 
     return;
