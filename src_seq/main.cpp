@@ -16,10 +16,17 @@ int main(int argc, char *argv[])
 
     Matrix A;
     A.ReadParamFile ("param.dat");
+    A.SetStationnaire ();
 
-    int N = 4;
+    int N = 9;
 
-    // Vector u (N, 2);
+    Vector u (N, 2);
+    // print ("u", u);
+
+    print ("A", A);
+
+    print ("Au", A*u);
+    print ("tuA", u*A);
     // Vector v (N, -3);
     // Vector w (N, 4.5);
     //
@@ -41,7 +48,9 @@ int main(int argc, char *argv[])
     // print ("u+v", w);
     //
     //
-    // return 0;
+
+
+    return 0;
 
     // CAS TEST 1
 
