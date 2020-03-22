@@ -7,19 +7,19 @@
 
 typedef std::vector <double> Vector;
 
-double operator| (Vector x, Vector y);
+double operator| (const Vector &x, const Vector &y);
 
-Vector operator+ (const Vector &x, const Vector &y);
+Vector& operator+ (const Vector &x, const Vector &y);
 
-Vector operator- (const Vector &x, const Vector &y);
+Vector& operator- (const Vector &x, const Vector &y);
 
 Vector& operator+= (Vector &x, const Vector &y);
 
 Vector& operator-= (Vector &x, const Vector &y);
 
-Vector operator* (double k, const Vector &x);
+Vector& operator* (double k, const Vector &x);
 
-Vector operator* (const Vector &x, double k);
+Vector& operator* (const Vector &x, double k);
 
 Vector& operator*= (Vector &x, double k);
 

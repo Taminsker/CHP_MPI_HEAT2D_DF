@@ -18,54 +18,54 @@ int main(int argc, char *argv[])
 
 
     // TESTS
-    int N = A.Nx * A.Ny;
-
-    Vector b (N, 0.);
-
-    for (int i = 0; i < A.Nx; ++i)
-    {
-        for (int j = 0; j < A.Ny; ++j)
-        {
-            b [j * A.Nx + i] = f_1 (i * A.dx, j * A.dy);
-        }
-    }
-
-
-    // Vector a (N, 0.5);
-    // printFile ("test.dat", A * a, A);
-    // print ("b", b, 9);
-
-    // print ("A", A, 0, 10, 0, 10);
-
-
-    Vector x;
-    x = conj_gradient (A, b);
-
-    // print ("x", x, 9);
-
-
-    printFile ("test.dat", x, A);
-
-
-    return 0;
-
-    // // TESTS
-    // int N = 10000;
+    // int N = A.Nx * A.Ny;
     //
-    // Vector u (N, 1);
-    // Vector v (N, 3);
-    // Vector w (N, 8);
-    // Vector z (N, 2);
+    // Vector b (N, 0.);
     //
-    // print ("u", u);
-    // print ("v", v);
-    // print ("w", w);
-    // print ("z", z);
+    // for (int i = 0; i < A.Nx; ++i)
+    // {
+    //     for (int j = 0; j < A.Ny; ++j)
+    //     {
+    //         b [j * A.Nx + i] = f_1 (i * A.dx, j * A.dy);
+    //     }
+    // }
     //
-    // printf ("u|v = %f\n", u|v);
-    // print ("u+v", u+v);
-    // print ("u-v", u-v);
-    // print ("2.5 * u", 2.5* u);
+    //
+    // // Vector a (N, 0.5);
+    // // printFile ("test.dat", A * a, A);
+    // // print ("b", b, 9);
+    //
+    // // print ("A", A, 0, 10, 0, 10);
+    //
+    //
+    // Vector x;
+    // x = conj_gradient (A, b);
+    //
+    // // print ("x", x, 9);
+    //
+    //
+    // printFile ("test.dat", x, A);
+    //
+    //
+    // return 0;
+
+    // TESTS
+    int N = 10000;
+
+    Vector u (N, 1);
+    Vector v (N, 3);
+    Vector w (N, 8);
+    Vector z (N, 2);
+
+    print ("u", u);
+    print ("v", v);
+    print ("w", w);
+    print ("z", z);
+
+    printf ("u|v = %f\n", u|v);
+    print ("u+v", u+v);
+    print ("u-v", u-v);
+    print ("2.5 * u", 2.5 * u);
     //
     // // Matrix A;
     // // A.ReadParamFile ();

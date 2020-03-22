@@ -6,7 +6,7 @@ void printFile (std::string filename, const Vector &a, const Matrix &A)
     std::ofstream file (filename.c_str ());
 
     auto space = std::setw (20);
-    file << "#x" << space << "y" << space << "u" << std::endl;
+    file << "#X" << space << "Y" << space << "U" << std::endl;
 
     double dx = A.Lx / double (A.Nx);
     double dy = A.Ly / double (A.Ny);
