@@ -16,41 +16,6 @@ int main(int argc, char *argv[])
 
     Matrix A;
     A.ReadParamFile ("param.dat");
-    A.SetStationnaire ();
-
-    int N = 9;
-
-    Vector u (N, 2);
-    // print ("u", u);
-
-    print ("A", A);
-
-    print ("Au", A*u);
-    print ("tuA", u*A);
-    // Vector v (N, -3);
-    // Vector w (N, 4.5);
-    //
-    // print ("u", u);
-    // print ("v", v);
-    // print ("w", w);
-    //
-    // printf ("u|v = %f\n", (u|v));
-    // print ("u+v", u+v);
-    // print ("u-v", u-v);
-    // print ("u+v", u+v);
-    // print ("2.5 * u", 2.5 * u);
-    //
-    // w = u+v;
-    // print ("u+v", w);
-    // w += w;
-    // print ("2*(u+v)", w);
-    // w *= 0.5;
-    // print ("u+v", w);
-    //
-    //
-
-
-    return 0;
 
     // CAS TEST 1
 
