@@ -4,3 +4,5 @@ build*
 *.toc
 *.aux
 exe*
+test*
+script*
