@@ -51,3 +51,20 @@ std::vector <double> Set_vector_f (double (*f) (double, double, double),
 
   return vec_f;
 }
+
+
+std::vector <double> Set_vector_f (double (*f) (Matrix, double, double, double),
+                                  double t, const Matrix &A)
+{
+  std::vector <double> vec_f (A.Nx * A.Ny, 0.);
+
+  for (int i = 0; i < A.Nx; i++) {
+    for (int j = 0; j < A.Ny; j++) {
+
+      vec_f [j * A.Nx + i] = f ( (i + 1) * A.dx, (j + 1) * A.dy, t);
+
+    }
+  }
+
+  return vec_f;
+}
