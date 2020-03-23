@@ -21,7 +21,7 @@ Vector conj_gradient (const Matrix &A, const Vector &b)
       Vector r_bis = r;
       r_bis -= alpha * (A * p);
 
-      printf("error : %10.5f\n", sqrt ((r_bis|r_bis)));
+      // printf("error : %10.5f\n", sqrt ((r_bis|r_bis)));
       if (sqrt ((r_bis|r_bis)) < eps)
         return x;
 

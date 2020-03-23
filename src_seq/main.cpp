@@ -84,6 +84,7 @@ int main(int argc, char *argv[])
             break;
 
         case 3:
+            {
             printf ("Cas non stationnaire gaussien\n");
             gnuplot_file = "script_test_3.gnu";
 
@@ -94,13 +95,13 @@ int main(int argc, char *argv[])
 
             for (int k = 0; k < 100; k++)
             {
-              b = b_0;
+              b = b_01;
               b += Set_vector_f (f_3, k * A.dt, A);
               b += (1. / (A.dt)) * x;
 
               x = conj_gradient (A, b);
 
-              dat_file = std::string ("test_3") + std::to_string (k) + std::string (".dat");
+              dat_file = std::string ("test_3_") + std::to_string (k) + std::string (".dat");
               printFile (dat_file, x, A);
               printFileGnuplot (gnuplot_file, dat_file, k, "Solution numérique");
             }
@@ -110,6 +111,7 @@ int main(int argc, char *argv[])
             printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
             break;
+            }
 
         default:
         case 0:
