@@ -42,15 +42,15 @@ Vector conj_gradient (const Matrix &A, const Vector &b)
 }
 
 
-double GetErrorL2 ((*u_ana) (double, double, double), Vector x, const Matrix &A)
+double GetErrorL2 (double (*u_ana) (double, double, double), Vector x, const Matrix &A)
 {
   double error = 0.;
 
   for (int i = 0; i < A.Nx; i++) {
     for (int j = 0; j < A.Ny; j++) {
 
-      double delta_ij = x [j * A.Nx + i] - u_ana ((i + 1) * A.dx, (j + 1) * A.dy)
-      error += delta * delta;
+      double delta_ij = x [j * A.Nx + i] - u_ana ((i + 1) * A.dx, (j + 1) * A.dy, 0);
+      error += delta_ij * delta_ij;
     }
   }
 
