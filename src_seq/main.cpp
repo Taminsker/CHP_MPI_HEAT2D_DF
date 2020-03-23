@@ -59,8 +59,9 @@ int main(int argc, char *argv[])
                 printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
                 endFileGnuplot (gnuplot_file);
 
+                printf("\nErreur L2 : %f\n", GetErrorL2 (u_ana1, x, A));
 
-                printf ("\nPour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+                printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
                 break;
             }
@@ -82,7 +83,9 @@ int main(int argc, char *argv[])
                 printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
                 endFileGnuplot (gnuplot_file);
 
-                printf ("\nPour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+                printf("\nErreur L2 : %f\n", GetErrorL2 (u_ana2, x, A));
+
+                printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
                 break;
             }
