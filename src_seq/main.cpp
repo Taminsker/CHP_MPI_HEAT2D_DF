@@ -94,14 +94,18 @@ int main(int argc, char *argv[])
                 Vector b_01 = Set_vector_b0 (g_3, A);
                 b_01 += Set_vector_b1 (h_3, A);
 
-                for (int k = 0; k < 250; k++)
+                createFileGnuplot (gnuplot_file, A);
+
+                for (int k = 0; k < 100; k++)
                 {
-                    printf("Itération k : %i \t-", k);
+                    printf("\rItération k : %i \t-", k);
                     b = b_01;
                     b += Set_vector_f (f_3, k * A.dt, A);
                     b += (1. / (A.dt)) * x;
 
                     x = conj_gradient (A, b);
+                    fflush(stdout);
+
 
                     dat_file = std::string ("test_3_") + std::to_string (k) + std::string (".dat");
                     printFile (dat_file, x, A);
@@ -111,7 +115,7 @@ int main(int argc, char *argv[])
 
                 endFileGnuplot (gnuplot_file);
 
-                printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+                printf ("\nPour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
                 break;
             }
