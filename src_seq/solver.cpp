@@ -36,8 +36,7 @@ Vector conj_gradient (const Matrix &A, const Vector &b)
         r = r_bis;
     }
 
-    printf ("(GradConj) : %i étapes,\t erreur = %f", k, sqrt(r|r));
-    fflush(stdout);
+    printf ("(GradConj) : %i étapes \t erreur = %f", k, sqrt(r|r));
 
     return x;
 }

@@ -29,11 +29,12 @@ int main(int argc, char *argv[])
     while (NoBreak)
     {
         int casTest = 0;
+        printf ("\n---------------- MENU ---------------------\n");
         printf ("Cas test : \n");
         printf ("\t1 - Cas stationnaire polynomial\n");
         printf ("\t2 - Cas stationnaire sinusoidal\n");
-        printf ("\t3 - Cas non stationnaire gaussien\n");
-        printf ("Sortie : 0 - Sortie\n\n");
+        printf ("\t3 - Cas non stationnaire gaussien\n\n");
+        printf ("\t0 - Sortie\n\n");
         printf ("Entrez numéro : ");
         scanf ("%i", &casTest);
         printf ("\n");
@@ -59,7 +60,7 @@ int main(int argc, char *argv[])
                 endFileGnuplot (gnuplot_file);
 
 
-                printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+                printf ("\nPour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
                 break;
             }
@@ -81,7 +82,7 @@ int main(int argc, char *argv[])
                 printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
                 endFileGnuplot (gnuplot_file);
 
-                printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+                printf ("\nPour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
                 break;
             }
@@ -96,9 +97,14 @@ int main(int argc, char *argv[])
 
                 createFileGnuplot (gnuplot_file, A);
 
-                for (int k = 0; k < 100; k++)
+                int maxStep = 100;
+                printf("Combien d'étape maximum temps ? ");
+                scanf ("%i", &maxStep);
+                printf ("\n");
+
+                for (int k = 0; k < maxStep; k++)
                 {
-                    printf("\rItération k : %i \t-", k);
+                    printf("\rItération k : %i/%i \t ", k+1, maxStep);
                     b = b_01;
                     b += Set_vector_f (f_3, k * A.dt, A);
                     b += (1. / (A.dt)) * x;
