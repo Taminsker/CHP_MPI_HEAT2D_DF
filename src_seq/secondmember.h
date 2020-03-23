@@ -5,13 +5,13 @@
 #include "listfunctions.h"
 #include "operators.h"
 
-std::vector <double> Set_vector_b0 (double (*g) (double, double, double),
+Vector Set_vector_b0 (double (*g) (double, double, double),
                                     const Matrix &A);
 
-std::vector <double> Set_vector_b1 (double (*h) (double, double, double),
+Vector Set_vector_b1 (double (*h) (double, double, double),
                                     const Matrix &A);
 
-std::vector <double> Set_vector_f (double (*f) (double, double, double),
+Vector Set_vector_f (double (*f) (const Matrix&, double, double, double),
                                   double t, const Matrix &A);
 
 #endif// SECOND_MEMBER_H

@@ -2,7 +2,7 @@
 
 // CAS TEST 1
 
-double f_1 (double x, double y, double t)
+double f_1 (const Matrix &A, double x, double y, double t)
 {
     return 2. * (y - y * y + x - x * x);
 }
@@ -20,7 +20,7 @@ double h_1 (double x, double y, double t)
 
 // CAS TEST 2
 
-double f_2 (double x, double y, double t)
+double f_2 (const Matrix &A, double x, double y, double t)
 {
     return sin(x) + cos(y);
 }
