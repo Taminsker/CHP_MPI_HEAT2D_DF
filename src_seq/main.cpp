@@ -73,7 +73,6 @@ int main(int argc, char *argv[])
             b += Set_vector_b1 (h_2, A);
 
             x = conj_gradient (A, b);
-            printFile ("sol.dat", x, A);
 
             printFile (dat_file, x, A);
             createFileGnuplot (gnuplot_file, A);
@@ -81,17 +80,32 @@ int main(int argc, char *argv[])
             endFileGnuplot (gnuplot_file);
 
             printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+
             break;
 
         case 3:
             printf ("Cas non stationnaire gaussien\n");
+            gnuplot_file = "script_test_3.gnu";
 
-            b = Set_vector_f (f_3, 0., A);
-            b += Set_vector_b0 (g_3, A);
-            b += Set_vector_b1 (h_3, A);
+            Vector b_01 = Set_vector_b0 (g_3, A);
+            b_01 += Set_vector_b1 (h_3, A);
 
-            x = conj_gradient (A, b);
-            printFile ("sol.dat", x, A);
+            createFileGnuplot (gnuplot_file, A);
+
+            for (int k = 0; k < 100; k++)
+            {
+              b = b_0;
+              b += Set_vector_f (f_3, k * A.dt, A);
+              b += (1. / (A.dt)) * x;
+
+              x = conj_gradient (A, b);
+
+              dat_file = std::string ("test_3") + std::to_string (k) + std::string (".dat");
+              printFile (dat_file, x, A);
+              printFileGnuplot (gnuplot_file, dat_file, k, "Solution numérique");
+            }
+
+            endFileGnuplot (gnuplot_file);
 
             printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
