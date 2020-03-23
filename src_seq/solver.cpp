@@ -42,7 +42,7 @@ Vector conj_gradient (const Matrix &A, const Vector &b)
 }
 
 
-double GetErrorL2 (double (*u_ana) (double, double, double), Vector x, const Matrix &A)
+double GetErrorl2 (double (*u_ana) (double, double, double), Vector x, const Matrix &A)
 {
   double error = 0.;
 
