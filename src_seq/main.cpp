@@ -94,16 +94,23 @@ int main(int argc, char *argv[])
                 Vector b_01 = Set_vector_b0 (g_3, A);
                 b_01 += Set_vector_b1 (h_3, A);
 
-                createFileGnuplot (gnuplot_file, A);
-
-                for (int k = 0; k < 250; k++)
+                for (int k = 0; k < 100; k++)
                 {
-                    printf("Itération k : %i \t- ", k);
                     b = b_01;
                     b += Set_vector_f (f_3, k * A.dt, A);
                     b += (1. / (A.dt)) * x;
 
-                    x = conj_gradient (A, b);
+                    for (int k = 0; k < 250; k++)
+                    {
+                        printf("Itération k : %i \t- ", k);
+                        b = b_01;
+                        b += Set_vector_f (f_3, k * A.dt, A);
+                        b += (1. / (A.dt)) * x;
+
+                        dat_file = std::string ("test_3_") + std::to_string (k) + std::string (".dat");
+                        printFile (dat_file, x, A);
+                        printFileGnuplot (gnuplot_file, dat_file, k, "Solution numérique");
+                    }
 
                     dat_file = std::string ("test_3_") + std::to_string (k) + std::string (".dat");
                     printFile (dat_file, x, A);
