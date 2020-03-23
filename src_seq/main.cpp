@@ -41,62 +41,81 @@ int main(int argc, char *argv[])
         switch (casTest)
         {
         case 1:
-            printf ("Cas stationnaire polynomial\n");
-            gnuplot_file = "script_test_1.gnu";
-            dat_file = "test1.dat";
+            {
+                printf ("Cas stationnaire polynomial\n");
+                gnuplot_file = "script_test_1.gnu";
+                dat_file = "test1.dat";
 
-            A.SetStationnaire ();
-            b = Set_vector_f (f_1, 0., A);
-            b += Set_vector_b0 (g_1, A);
-            b += Set_vector_b1 (h_1, A);
+                A.SetStationnaire ();
+                b = Set_vector_f (f_1, 0., A);
+                b += Set_vector_b0 (g_1, A);
+                b += Set_vector_b1 (h_1, A);
 
-            x = conj_gradient (A, b);
+                x = conj_gradient (A, b);
 
-            printFile (dat_file, x, A);
-            createFileGnuplot (gnuplot_file, A);
-            printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
-            endFileGnuplot (gnuplot_file);
+                printFile (dat_file, x, A);
+                createFileGnuplot (gnuplot_file, A);
+                printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
+                endFileGnuplot (gnuplot_file);
 
 
-            printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+                printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
-            break;
-
+                break;
+            }
         case 2:
-            printf ("Cas stationnaire sinusoidal\n");
-            gnuplot_file = "script_test_2.gnu";
-            dat_file = "test2.dat";
+            {
+                printf ("Cas stationnaire sinusoidal\n");
+                gnuplot_file = "script_test_2.gnu";
+                dat_file = "test2.dat";
 
-            A.SetStationnaire ();
-            b = Set_vector_f (f_2, 0., A);
-            b += Set_vector_b0 (g_2, A);
-            b += Set_vector_b1 (h_2, A);
+                A.SetStationnaire ();
+                b = Set_vector_f (f_2, 0., A);
+                b += Set_vector_b0 (g_2, A);
+                b += Set_vector_b1 (h_2, A);
 
-            x = conj_gradient (A, b);
-            printFile ("sol.dat", x, A);
+                x = conj_gradient (A, b);
 
-            printFile (dat_file, x, A);
-            createFileGnuplot (gnuplot_file, A);
-            printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
-            endFileGnuplot (gnuplot_file);
+                printFile (dat_file, x, A);
+                createFileGnuplot (gnuplot_file, A);
+                printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
+                endFileGnuplot (gnuplot_file);
 
-            printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
-            break;
+                printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+
+                break;
+            }
 
         case 3:
-            printf ("Cas non stationnaire gaussien\n");
+            {
+                printf ("Cas non stationnaire gaussien\n");
+                gnuplot_file = "script_test_3.gnu";
 
-            b = Set_vector_f (f_3, 0., A);
-            b += Set_vector_b0 (g_3, A);
-            b += Set_vector_b1 (h_3, A);
+                Vector b_01 = Set_vector_b0 (g_3, A);
+                b_01 += Set_vector_b1 (h_3, A);
 
-            x = conj_gradient (A, b);
-            printFile ("sol.dat", x, A);
+                createFileGnuplot (gnuplot_file, A);
 
-            printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+                for (int k = 0; k < 250; k++)
+                {
+                    printf("Itération k : %i \t- ", k);
+                    b = b_01;
+                    b += Set_vector_f (f_3, k * A.dt, A);
+                    b += (1. / (A.dt)) * x;
 
-            break;
+                    x = conj_gradient (A, b);
 
+                    dat_file = std::string ("test_3_") + std::to_string (k) + std::string (".dat");
+                    printFile (dat_file, x, A);
+                    printFileGnuplot (gnuplot_file, dat_file, k, "Solution numérique");
+                }
+
+                endFileGnuplot (gnuplot_file);
+
+                printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+
+                break;
+            }
         default:
         case 0:
             printf ("Sortie du programme\n");

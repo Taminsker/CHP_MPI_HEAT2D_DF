@@ -12,25 +12,31 @@ Vector conj_gradient (const Matrix &A, const Vector &b)
     Vector r = b;
     Vector p = r;
 
-    for (int k = 0; k < N; k++) {
+    int k;
+    for (k = 0; k < N; k++) {
 
-      double alpha = (r | r) / ((A * p) | p);
+        double alpha = (r | r) / ((A * p) | p);
 
-      x += alpha * p;
+        x += alpha * p;
 
-      Vector r_bis = r;
-      r_bis -= alpha * (A * p);
+        Vector r_bis = r;
+        r_bis -= alpha * (A * p);
 
-      printf("error : %10.5f\n", sqrt ((r_bis|r_bis)));
-      if (sqrt ((r_bis|r_bis)) < eps)
-        return x;
+        // printf("error : %10.5f\n", sqrt ((r_bis|r_bis)));
+        if (sqrt ((r_bis|r_bis)) < eps)
+        {
+            r = r_bis;
+            break;
+        }
 
-      double beta = (r_bis | r_bis) / (r | r);
+        double beta = (r_bis | r_bis) / (r | r);
 
-      p *= beta;
-      p += r_bis;
-      r = r_bis;
+        p *= beta;
+        p += r_bis;
+        r = r_bis;
     }
+
+    printf ("(GradConj) : %i étapes,\t erreur = %f\n", k, sqrt(r|r));
 
     return x;
 }

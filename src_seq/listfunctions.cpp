@@ -49,7 +49,7 @@ double g_3 (double x, double y, double t)
 
 double h_3 (double x, double y, double t)
 {
-    return 1.;
+    return 0.;
 }
 
 
