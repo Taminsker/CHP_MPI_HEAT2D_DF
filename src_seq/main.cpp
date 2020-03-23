@@ -24,69 +24,85 @@ int main(int argc, char *argv[])
     Vector b (A.Nx * A.Ny, 0.);
     Vector x (A.Nx * A.Ny, 0.);
 
-    int casTest = 0;
-    printf ("Cas test 1, 2 ou 3 : \n");
-    scanf ("%d\n", &casTest);
+    bool NoBreak = true;
 
-    switch (casTest)
+    while (NoBreak)
     {
-    case 1:
-        printf ("Cas stationnaire polynomial\n");
-        gnuplot_file = "script_test_1.gnu";
-        dat_file = "test1.dat";
+        int casTest = 0;
+        printf ("Cas test : \n");
+        printf ("\t1 - Cas stationnaire polynomial\n");
+        printf ("\t2 - Cas stationnaire sinusoidal\n");
+        printf ("\t3 - Cas non stationnaire gaussien\n");
+        printf ("Sortie : 0 - Sortie\n\n");
+        printf ("Entrez numéro : ");
+        scanf ("%i", &casTest);
+        printf ("\n");
 
-        A.SetStationnaire ();
-        b = Set_vector_f (f_1, 0., A);
-        b += Set_vector_b0 (g_1, A);
-        b += Set_vector_b1 (h_1, A);
+        switch (casTest)
+        {
+        case 1:
+            printf ("Cas stationnaire polynomial\n");
+            gnuplot_file = "script_test_1.gnu";
+            dat_file = "test1.dat";
 
-        x = conj_gradient (A, b);
+            A.SetStationnaire ();
+            b = Set_vector_f (f_1, 0., A);
+            b += Set_vector_b0 (g_1, A);
+            b += Set_vector_b1 (h_1, A);
 
-        printFile (dat_file, x, A);
-        createFileGnuplot (gnuplot_file, A);
-        printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
-        endFileGnuplot (gnuplot_file);
+            x = conj_gradient (A, b);
+
+            printFile (dat_file, x, A);
+            createFileGnuplot (gnuplot_file, A);
+            printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
+            endFileGnuplot (gnuplot_file);
 
 
-        printf ("Pour afficher : tapez 'gnuplot' puis\n'splot using 1:2:3 w p palette'");
+            printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
-        break;
+            break;
 
-    case 2:
-        printf ("Cas stationnaire sinusoidal\n");
-        gnuplot_file = "script_test_2.gnu";
-        dat_file = "test2.dat";
+        case 2:
+            printf ("Cas stationnaire sinusoidal\n");
+            gnuplot_file = "script_test_2.gnu";
+            dat_file = "test2.dat";
 
-        A.SetStationnaire ();
-        b = Set_vector_f (f_2, 0., A);
-        b += Set_vector_b0 (g_2, A);
-        b += Set_vector_b1 (h_2, A);
+            A.SetStationnaire ();
+            b = Set_vector_f (f_2, 0., A);
+            b += Set_vector_b0 (g_2, A);
+            b += Set_vector_b1 (h_2, A);
 
-        x = conj_gradient (A, b);
-        printFile ("sol.dat", x, A);
+            x = conj_gradient (A, b);
+            printFile ("sol.dat", x, A);
 
-        printFile (dat_file, x, A);
-        createFileGnuplot (gnuplot_file, A);
-        printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
-        endFileGnuplot (gnuplot_file);
+            printFile (dat_file, x, A);
+            createFileGnuplot (gnuplot_file, A);
+            printFileGnuplot (gnuplot_file, dat_file, 0, "Solution numérique");
+            endFileGnuplot (gnuplot_file);
 
-        printf ("Pour afficher : tapez 'gnuplot' puis\n'splot using 1:2:3 w p palette'");
+            printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
+            break;
 
-        break;
+        case 3:
+            printf ("Cas non stationnaire gaussien\n");
 
-    case 3:
-        printf ("Cas non stationnaire gaussien\n");
+            b = Set_vector_f (f_3, 0., A);
+            b += Set_vector_b0 (g_3, A);
+            b += Set_vector_b1 (h_3, A);
 
-        b = Set_vector_f (f_3, 0., A);
-        b += Set_vector_b0 (g_3, A);
-        b += Set_vector_b1 (h_3, A);
+            x = conj_gradient (A, b);
+            printFile ("sol.dat", x, A);
 
-        x = conj_gradient (A, b);
-        printFile ("sol.dat", x, A);
+            printf ("Pour afficher : tapez 'gnuplot %s'\n", gnuplot_file.c_str ());
 
-        printf ("Pour afficher : tapez 'gnuplot' puis\n'splot using 1:2:3 w p palette'");
+            break;
 
-        break;
+        default:
+        case 0:
+            printf ("Sortie du programme\n");
+            NoBreak = false;
+            break;
+        }
     }
 
     return 0;
