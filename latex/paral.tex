@@ -1,0 +1,93 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{amsmath, amssymb, amsthm}            
+\usepackage{amstext, amsfonts, a4}
+\usepackage{hyperref}
+\usepackage[ruled,vlined, french, onelanguage]{algorithm2e}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{pgffor}
+
+
+\newcommand{\pluseq}{\mathrel{+}=}
+
+\begin{document}
+
+Rappelons que $A$ la matrice est stockée sous forme de $3$ valeurs $a, b$ et $c$ uniquement.\\
+\begin{algorithm}[H]
+\SetAlgoLined
+$nproc\gets$ nombre de proc.\\
+$me\gets$ numéro du proc courant.\\
+$iBeg_{me}\gets$ indice de début dont s'occupe le proc $me$.\\
+$iEnd_{me}\gets$ indice de fin dont s'occupe le proc $me$.\\
+$S_{me} = iEnd_{me}-iBeg_{me} + 1$.\\
+$v_{me} \gets$ vecteur de taille $S_{me}$ destiné à accueillir le vecteur $Au=v$ sur $me$.\\ 
+~\\
+\ForEach{$k=0:nproc-1$}
+{
+	$iBeg_k\gets$ indice de début dont s'occupe le proc $k$\\
+	$iEnd_k\gets$ indice de fin dont s'occupe le proc $k$\\
+	~\\
+	$S_{k} = iEnd_{k}-iBeg_{k} + 1$\\
+	$v_{k} \gets$ vecteur temporaire de taille $S_{k}$ initialisé à zéro.\\
+	~\\ 
+	\For{$p\,=\,iBeg_k:iEnd_k$}
+	{ 
+		$i = reste(p,\,N_x)$ et $j = quotient(p,\, N_x)$\\
+		~\\
+		\For{$n\,=\,iBeg_{me}:iEnd_{me}$}
+		{
+			\If{$j > 0$ (ie P$(i,j)\notin\Gamma_{\text{bas}}$)}
+			{
+				\If{$n == p - N_x$}
+				{
+					$v_k [p-iBeg_{k}] \pluseq c\, u [n - iBeg_{me}]$\hfill($p\mapsto n=$P$(i, j-1)$)\\
+				}
+			}
+			\If{$i > 0$ (ie P$(i,j)\notin\Gamma_{\text{gauche}}$)}
+			{
+				\If{$n == p - 1$}
+				{
+					$v_k [p-iBeg_{k}] \pluseq b\, u [n - iBeg_{me}]$ \hfill($p\mapsto n=$P$(i-1, j)$)\\
+				}
+			}
+			~\\
+			\If{$n == p$}
+			{
+				$v_k [p-iBeg_{k}] \pluseq a\, u [n - iBeg_{me}]$ \hfill($p\mapsto n=p$)\\
+			}			
+			~\\
+			\If{$i < N_x$ (ie P$(i,j)\notin\Gamma_{\text{droit}}$)}
+			{
+				\If{$n == p + 1$}
+				{
+					$v_k [p-iBeg_{k}] \pluseq b\, u [n - iBeg_{me}]$\hfill($p\mapsto n=$P$(i+1, j)$)\\
+				}
+			}
+			~\\
+			\If{$j < N_y$ (ie P$(i,j)\notin\Gamma_{\text{haut}}$)}
+			{
+				\If{$n == p + N_x$}
+				{
+					$v_k [p-iBeg_{k}] \pluseq c\, u [n - iBeg_{me}]$\hfill($p\mapsto n=$P$(i, j+1)$)\\
+				}
+			}
+			
+		}
+		
+		~\\
+		MPI$\_$Reduce (\&$v_{k}[0]$, \&$v_{me}[0]$, $S_k$, MPI$\_$DOUBLE, MPI$\_$SUM, $k$, MPI$\_$COM$\_$WORLD)\\
+	}
+	
+	retourner $v_{me}$\\
+}
+ \caption{Produit matriciel $Au = v$}
+\end{algorithm}
+
+\end{document}
